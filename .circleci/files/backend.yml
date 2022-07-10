@@ -28,10 +28,8 @@ Resources:
       InstanceType: t2.micro
       SecurityGroups:
         - Ref: InstanceSecurityGroup
-      KeyName: userprj3
-      ImageId: ami-0729e439b6769d6ab
+      KeyName: prj3 
+      ImageId: ami-0729e439b6769d6ab 
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
-        - Key: Project
-          Value: prj3
