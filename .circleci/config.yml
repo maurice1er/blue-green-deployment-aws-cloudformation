@@ -58,7 +58,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name prj-backend-<< parameters.Workflow_ID >>
+            aws cloudformation delete-stack --stack-name prj3-backend-<< parameters.Workflow_ID >>
             aws s3 rm s3://prj3-<<parameters.Workflow_ID>> --recursive
             aws cloudformation delete-stack --stack-name prj3-frontend-<< parameters.Workflow_ID >>
 
