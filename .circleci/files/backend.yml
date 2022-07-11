@@ -20,7 +20,8 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3030
           ToPort: 3030
-          CidrIp: 0.0.0.0/0
+          CidrIp: 0.0.0.0/0 
+      VpcId: !Ref PubPrivateVPC
 
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -32,7 +33,32 @@ Resources:
       ImageId: ami-0729e439b6769d6ab 
       Tags:
         - Key: Name
-          Value: !Sub backend-${ID}
+          Value: !Sub backend-${ID} 
+
+
+  PubPrivateVPC:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 172.31.0.0/16
+  
+  PublicSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone: us-east-1a
+      CidrBlock: 172.31.1.0/24
+      MapPublicIpOnLaunch: true
+  
+  PublicSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone: us-east-1b
+      CidrBlock: 172.31.2.0/24
+      MapPublicIpOnLaunch: true 
+
+
+
 
   InstanceEIP:
     Type: AWS::EC2::EIP
