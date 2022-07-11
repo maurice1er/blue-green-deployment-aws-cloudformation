@@ -14,7 +14,7 @@ Resources:
       CidrBlock: 172.33.0.0/16
     Tags:
       - Key: Name
-        Value: myvpc
+        Value: myvpc-uda
   
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
