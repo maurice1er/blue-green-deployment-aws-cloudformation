@@ -320,36 +320,34 @@ jobs:
           at: ~/
       - restore_cache:
           keys: [backend-deps] 
-          
       - run:
           name: Install dependencies
           command: |
             cd backend
             npm i 
-
       - run:
           name: Package Backend
           command: |
             cd backend
-            npm run build
+            npm run build 
+            ls -l
             tar -czf artifact.tar.gz dist/* package*
-
+            ls -l 
             cd ..
             cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
-      
       - run:
           name: Deploy backend
           command: | 
-            export TYPEORM_MIGRATIONS_DIR=./migrations
+            export TYPEORM_MIGRATIONS_DIR=./migrations 
             export TYPEORM_ENTITIES=./modules/domain/**/*.entity{.ts,.js}
             export TYPEORM_MIGRATIONS=./migrations/*.ts
 
             cd .circleci/ansible
             cat inventory.txt 
             ls -l 
-            echo "####-------------###"
+            echo '------------------------'
             ansible-playbook -i inventory.txt deploy-backend.yml 
-
+      
       - destroy-environment 
       - revert-migrations
       # Here's where you will add some code to rollback on failure  
