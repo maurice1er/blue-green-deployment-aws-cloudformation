@@ -12,6 +12,9 @@ Resources:
     Type: 'AWS::EC2::VPC'
     Properties:
       CidrBlock: 172.33.0.0/16
+    Tags:
+      - Key: Name
+        Value: myvpc
   
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
@@ -20,6 +23,9 @@ Resources:
       AvailabilityZone: us-east-1a
       CidrBlock: 172.33.1.0/24
       MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: myPubSubnet1
   
   PublicSubnet2:
     Type: 'AWS::EC2::Subnet'
@@ -28,39 +34,65 @@ Resources:
       AvailabilityZone: us-east-1b
       CidrBlock: 172.33.2.0/24
       MapPublicIpOnLaunch: true 
+      Tags:
+        - Key: Name
+          Value: myPubSubnet2 
+
+  PrivateSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone: us-east-1a
+      CidrBlock: 172.33.3.0/24
+      MapPublicIpOnLaunch: false
+    Tags:
+      - Key: Name
+        Value: myPrivSubnet1
+    
+  PrivateSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref PubPrivateVPC
+      AvailabilityZone: us-east-1b
+      CidrBlock: 172.33.4.0/24
+      MapPublicIpOnLaunch: false
+    Tags:
+      - Key: Name
+        Value: myPrivSubnet2
 
 
-  # InstanceSecurityGroup:
-  #   Type: AWS::EC2::SecurityGroup
-  #   Properties:
-  #     GroupName: !Sub UdaPeople-${ID}
-  #     GroupDescription: Allow port 22 and port 3030.
-  #     SecurityGroupIngress:
-  #       - IpProtocol: tcp
-  #         FromPort: 22
-  #         ToPort: 22
-  #         CidrIp: 0.0.0.0/0
-  #       - IpProtocol: tcp
-  #         FromPort: 3030
-  #         ToPort: 3030
-  #         CidrIp: 0.0.0.0/0 
-  #     VpcId: !Ref PubPrivateVPC
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub UdaPeople-${ID}
+      GroupDescription: Allow port 22 and port 3030.
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3030
+          ToPort: 3030
+          CidrIp: 0.0.0.0/0 
+      VpcId: !Ref PubPrivateVPC
 
-  # EC2Instance:
-  #   Type: AWS::EC2::Instance
-  #   Properties:
-  #     InstanceType: t2.micro
-  #     SecurityGroups:
-  #       - Ref: InstanceSecurityGroup
-  #     KeyName: userprj3 
-  #     ImageId: ami-0729e439b6769d6ab 
-  #     Tags:
-  #       - Key: Name
-  #         Value: !Sub backend-${ID} 
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      KeyName: userprj3 
+      ImageId: ami-0729e439b6769d6ab 
+      Tags:
+        - Key: Name
+          Value: !Sub backend-${ID} 
+
+  InstanceEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref EC2Instance
 
 
-  # InstanceEIP:
-  #   Type: AWS::EC2::EIP
-  #   Properties:
-  #     Domain: vpc
-  #     InstanceId: !Ref EC2Instance
