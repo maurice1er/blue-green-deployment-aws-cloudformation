@@ -12,9 +12,9 @@ Resources:
     Type: 'AWS::EC2::VPC'
     Properties:
       CidrBlock: 172.33.0.0/16
-    Tags:
-      - Key: Name
-        Value: myvpc-uda
+      Tags:
+        - Key: Name
+          Value: myvpc
   
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
@@ -45,9 +45,9 @@ Resources:
       AvailabilityZone: us-east-1a
       CidrBlock: 172.33.3.0/24
       MapPublicIpOnLaunch: false
-    Tags:
-      - Key: Name
-        Value: myPrivSubnet1
+      Tags:
+        - Key: Name
+          Value: myPrivSubnet1
     
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
@@ -56,9 +56,9 @@ Resources:
       AvailabilityZone: us-east-1b
       CidrBlock: 172.33.4.0/24
       MapPublicIpOnLaunch: false
-    Tags:
-      - Key: Name
-        Value: myPrivSubnet2
+      Tags:
+        - Key: Name
+          Value: myPrivSubnet2 
 
 
   InstanceSecurityGroup:
@@ -94,5 +94,3 @@ Resources:
     Properties:
       Domain: vpc
       InstanceId: !Ref EC2Instance
-
-
