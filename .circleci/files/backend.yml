@@ -78,16 +78,19 @@ Resources:
           CidrIp: 0.0.0.0/0 
       VpcId: !Ref PubPrivateVPC
 
+
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
-      SecurityGroups: !Ref InstanceSecurityGroup 
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup 
       KeyName: userprj3 
       ImageId: ami-0729e439b6769d6ab 
       Tags:
         - Key: Name
           Value: !Sub backend-${ID} 
+
 
   InstanceEIP:
     Type: AWS::EC2::EIP
