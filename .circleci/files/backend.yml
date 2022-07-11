@@ -1,5 +1,5 @@
 Description: >
-  prj3 backend stack.
+  UdaPeople backend stack.
 
 Parameters:
   ID:
@@ -10,7 +10,7 @@ Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: !Sub prj3-${ID}
+      GroupName: !Sub UdaPeople-${ID}
       GroupDescription: Allow port 22 and port 3030.
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -28,7 +28,7 @@ Resources:
       InstanceType: t2.micro
       SecurityGroups:
         - Ref: InstanceSecurityGroup
-      KeyName: prj3 
+      KeyName: userprj3 
       ImageId: ami-0729e439b6769d6ab 
       Tags:
         - Key: Name
