@@ -49,7 +49,6 @@ Resources:
         - Key: Name
           Value: myPrivSubnet1
     
-
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
@@ -85,6 +84,7 @@ Resources:
       InstanceType: t2.micro
       SecurityGroups:
         - Ref: InstanceSecurityGroup 
+      SubnetId: !Ref PublicSubnet1
       KeyName: userprj3 
       ImageId: ami-0729e439b6769d6ab
       Tags:
@@ -97,3 +97,4 @@ Resources:
     Properties:
       Domain: vpc
       InstanceId: !Ref EC2Instance
+
