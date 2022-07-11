@@ -39,14 +39,14 @@ Resources:
   PubPrivateVPC:
     Type: 'AWS::EC2::VPC'
     Properties:
-      CidrBlock: 172.31.0.0/16
+      CidrBlock: 172.33.0.0/16
   
   PublicSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
       VpcId: !Ref PubPrivateVPC
       AvailabilityZone: us-east-1a
-      CidrBlock: 172.31.1.0/24
+      CidrBlock: 172.33.1.0/24
       MapPublicIpOnLaunch: true
   
   PublicSubnet2:
@@ -54,7 +54,7 @@ Resources:
     Properties:
       VpcId: !Ref PubPrivateVPC
       AvailabilityZone: us-east-1b
-      CidrBlock: 172.31.2.0/24
+      CidrBlock: 172.33.2.0/24
       MapPublicIpOnLaunch: true 
 
 
