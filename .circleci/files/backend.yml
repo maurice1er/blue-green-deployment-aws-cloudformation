@@ -1,70 +1,16 @@
 Description: >
-  UdaPeople backend stack.
+  prj3 backend stack.
 
 Parameters:
   ID:
     Description: Unique identifier.
     Type: String
 
-Resources: 
-
-  PubPrivateVPC:
-    Type: 'AWS::EC2::VPC'
-    Properties:
-      CidrBlock: 172.33.0.0/16
-      Tags:
-        - Key: Name
-          Value: myvpc
-  
-  # PublicSubnet1:
-  #   Type: 'AWS::EC2::Subnet'
-  #   Properties:
-  #     VpcId: !Ref PubPrivateVPC
-  #     AvailabilityZone: us-east-1a
-  #     CidrBlock: 172.33.1.0/24
-  #     MapPublicIpOnLaunch: true
-  #     Tags:
-  #       - Key: Name
-  #         Value: myPubSubnet1
-  
-  # PublicSubnet2:
-  #   Type: 'AWS::EC2::Subnet'
-  #   Properties:
-  #     VpcId: !Ref PubPrivateVPC
-  #     AvailabilityZone: us-east-1b
-  #     CidrBlock: 172.33.2.0/24
-  #     MapPublicIpOnLaunch: true 
-  #     Tags:
-  #       - Key: Name
-  #         Value: myPubSubnet2 
-
-  PrivateSubnet1:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      VpcId: !Ref PubPrivateVPC
-      AvailabilityZone: us-east-1a
-      CidrBlock: 172.33.3.0/24
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: Name
-          Value: myPrivSubnet1
-    
-  PrivateSubnet2:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      VpcId: !Ref PubPrivateVPC
-      AvailabilityZone: us-east-1b
-      CidrBlock: 172.33.4.0/24
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: Name
-          Value: myPrivSubnet2 
-
-
+Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: !Sub UdaPeople-${ID}
+      GroupName: !Sub prj3-${ID}
       GroupDescription: Allow port 22 and port 3030.
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -74,18 +20,16 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3030
           ToPort: 3030
-          CidrIp: 0.0.0.0/0 
-      VpcId: !Ref PubPrivateVPC
-
+          CidrIp: 0.0.0.0/0
 
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
       SecurityGroups:
-        - Ref: InstanceSecurityGroup 
+        - Ref: InstanceSecurityGroup
       KeyName: userprj3 
-      ImageId: ami-0729e439b6769d6ab
+      ImageId: ami-0729e439b6769d6ab 
       Tags:
         - Key: Name
-          Value: !Sub backend-${ID} 
+          Value: !Sub backend-${ID}
