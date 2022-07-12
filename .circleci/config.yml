@@ -478,8 +478,8 @@ jobs:
 
             ls -la
             
-            IP_EXPORTER="${BACKEND_PUBLIC_IP}" envsubst < config/prometheus-conf.yml.tmpl > config/prometheus-conf.yml
-            PORT_EXPORTER="9090" envsubst < config/prometheus-conf.yml.tmpl > config/prometheus-conf.yml
+            IP_EXPORTER="${BACKEND_PUBLIC_IP}" envsubst < .circleci/config/prometheus-conf.yml.tmpl > .circleci/config/prometheus-conf.yml
+            PORT_EXPORTER="9090" envsubst < .circleci/config/prometheus-conf.yml.tmpl > .circleci/config/prometheus-conf.yml
 
             # my_image="70077007/$IMAGE_TAG_NAME:$BUILD_NUMBER" envsubst < k8s/deploy.yml.tmpl > k8s/k8s-deploy.yml
 
@@ -487,7 +487,7 @@ jobs:
             cd ansible
             
             # ansible-playbook example.yml --extra-vars “group=development pkg_name=apache2”
-            ansible-playbook -i inventory-prometheus.txt deploy-prometheus.yml --extra-vars "prom_conf_file=config/prometheus-conf.yml" 
+            ansible-playbook -i inventory-prometheus.txt deploy-prometheus.yml --extra-vars "prom_conf_file=.circleci/config/prometheus-conf.yml" 
 
       
       
