@@ -21,10 +21,42 @@
       changed_when: false
       
   tasks:
-    - name: Install ansible 
+    - name: [1] Create Prometheus system group
       shell: | 
-        apt-get install -y prometheus 
+        groupadd --system prometheus
+        useradd -s /sbin/nologin --system -g prometheus prometheus
 
-  roles:
-    - configure-prometheus-server
+    - name: [2] Create data & configs directories for Prometheus
+      shell: | 
+        mkdir /var/lib/prometheus
+        for i in rules rules.d files_sd; do sudo mkdir -p /etc/prometheus/${i}; done
+
+    - name: Install prometheus 
+      shell: | 
+        mkdir -p /tmp/prometheus && cd /tmp/prometheus
+        curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4 | wget -qi - 
+        tar xvf prometheus*.tar.gz
+        cd prometheus*/ 
+        mv prometheus promtool /usr/local/bin/  
+
+    - name: Check installed version
+      shell: | 
+        prometheus --version
+        promtool --version 
+
+        mv prometheus.yml /etc/prometheus/prometheus.yml 
+        mv consoles/ console_libraries/ /etc/prometheus/
+
+    - name: Reload systemd daemon and start the service
+      shell: |
+        systemctl daemon-reload
+        systemctl start prometheus
+        systemctl enable prometheus
+
+    - name: Check status using systemctl status prometheus command 
+      shell: |
+        systemctl status prometheus
+
+  # roles:
+  #   - configure-prometheus-server
 
