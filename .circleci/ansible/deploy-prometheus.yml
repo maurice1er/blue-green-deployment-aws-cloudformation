@@ -29,14 +29,15 @@
       shell: | 
         tar xzvf prometheus-2.19.0.linux-amd64.tar.gz
 
-    - name: Install prometheus 
+    - name: ls prometheus folder
       shell: | 
-        cd prometheus-2.19.0.linux-amd64
+        cd prometheus-2.19.0.linux-amd64 
+        ls -la 
 
     - name: Check installed version
       shell: | 
-        ls -l
-        # ./prometheus --version
+        ls -la 
+        ./prometheus --version
 
   # roles:
   #   - configure-prometheus-server 
