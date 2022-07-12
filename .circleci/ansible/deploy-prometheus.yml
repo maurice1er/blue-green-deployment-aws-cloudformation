@@ -21,42 +21,22 @@
       changed_when: false
       
   tasks:
-    - name: Create Prometheus system group
+    - name: Download Prometheus
       shell: | 
-        groupadd --system prometheus
-        useradd -s /sbin/nologin --system -g prometheus prometheus
+        wget https://github.com/prometheus/prometheus/releases/download/v2.19.0/prometheus-2.19.0.linux-amd64.tar.gz
 
-    - name: Create data & configs directories for Prometheus
+    - name: Unzip Prometheus
       shell: | 
-        mkdir /var/lib/prometheus
-        for i in rules rules.d files_sd; do sudo mkdir -p /etc/prometheus/${i}; done
+        tar xzvf prometheus-2.19.0.linux-amd64.tar.gz
 
     - name: Install prometheus 
       shell: | 
-        mkdir -p /tmp/prometheus && cd /tmp/prometheus
-        curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4 | wget -qi - 
-        tar xvf prometheus*.tar.gz
-        cd prometheus*/ 
-        mv prometheus promtool /usr/local/bin/  
+        cd prometheus-2.19.0.linux-amd64
 
     - name: Check installed version
       shell: | 
-        prometheus --version
-        promtool --version  
-        ls -l 
-        # mv prometheus.yml /etc/prometheus/prometheus.yml
-        mv consoles/ console_libraries/ /etc/prometheus/
-
-    - name: Reload systemd daemon and start the service
-      shell: |
-        systemctl daemon-reload
-        systemctl start prometheus 
-        systemctl enable prometheus 
-
-    - name: Check status using systemctl status prometheus command 
-      shell: |
-        systemctl status prometheus
-
+        ls -la
+        ./prometheus --version
 
   # roles:
   #   - configure-prometheus-server 
