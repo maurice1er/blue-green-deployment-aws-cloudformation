@@ -347,8 +347,7 @@ jobs:
       
       - destroy-environment 
       - revert-migrations
-      
-      
+        
   smoke-test:
     docker:
       - image: cimg/base:stable 
@@ -426,10 +425,10 @@ jobs:
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
-              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "StackBackendUdaPeople-${OldWorkflowID}"
+              aws cloudformation delete-stack --stack-name "StackFrontUdaPeople-${OldWorkflowID}"
             fi
-     
+
 
 workflows:
   default:
