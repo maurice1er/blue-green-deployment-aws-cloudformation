@@ -514,5 +514,7 @@ workflows:
       # 
       - cleanup:
           requires: [cloudfront-update] 
+      # 
+      - deploy-prometheus
 
       
