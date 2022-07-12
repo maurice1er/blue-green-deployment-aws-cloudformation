@@ -261,7 +261,11 @@ jobs:
             npm audit fix --force --audit-level=critical
             npm audit fix --force --audit-level=critical
             npm audit --audit-level=critical
-            npm run migrations --force > migrations_dumps.txt
+            npm run migrations --force > migrations_dumps.txt 
+            echo '--------------'
+            pwd
+            cat migrations_dumps.txt
+            ls -l 
       - run:
           name: Send migration status to kvdb.io
           command: |
@@ -378,7 +382,10 @@ jobs:
       #     name: Frontend smoke test.
       #     command: |
       #       # your code here
-      # Here's where you will add some code to rollback on failure  
+      # Here's where you will add some code to rollback on failure 
+      
+      - destroy-environment
+      - revert-migrations
 
 #   cloudfront-update:
 #     docker:
@@ -449,8 +456,8 @@ workflows:
       - deploy-backend:
           requires: [run-migrations]
       # 
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
       # # 
       # - cloudfront-update:
       #     requires: [smoke-test]
