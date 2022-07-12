@@ -28,16 +28,20 @@
     - name: Unzip Prometheus
       shell: | 
         tar xzvf prometheus-2.19.0.linux-amd64.tar.gz
-
-    - name: ls prometheus folder
-      shell: | 
-        cd prometheus-2.19.0.linux-amd64 
-        ls -la 
+        mv prometheus-2.19.0.linux-amd64.tar.gz prometheus
 
     - name: Check installed version
       shell: | 
-        cd prometheus-2.19.0.linux-amd64
-        ./prometheus --version
+        cd prometheus
+        ./prometheus --version 
+
+    - name: Run prometheus
+      shell: | 
+        cp {{prom_conf_file}} ./prometheus
+        cd prometheus 
+        ./prometheus
+
+ 
 
   # roles:
   #   - configure-prometheus-server 

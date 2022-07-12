@@ -467,9 +467,21 @@ jobs:
       - run:
           name: Deploy prometheus
           command: | 
-            cd .circleci/ansible 
+            BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
             
-            ansible-playbook -i inventory-prometheus.txt deploy-prometheus.yml
+            IP_EXPORTER="${BACKEND_PUBLIC_IP}" envsubst < ./circleci/config/prometheus-conf.yml.tmpl > ./circleci/config/prometheus-conf.yml
+            PORT_EXPORTER="9090" envsubst < ./circleci/config/prometheus-conf.yml.tmpl > ./circleci/config/prometheus-conf.yml
+
+            # my_image="70077007/$IMAGE_TAG_NAME:$BUILD_NUMBER" envsubst < k8s/deploy.yml.tmpl > k8s/k8s-deploy.yml
+
+            cd .circleci/ansible
+            
+            # ansible-playbook example.yml --extra-vars “group=development pkg_name=apache2”
+            ansible-playbook -i inventory-prometheus.txt deploy-prometheus.yml --extra-vars "prom_conf_file=./circleci/config/prometheus-conf.yml" 
+            
       
       
 
