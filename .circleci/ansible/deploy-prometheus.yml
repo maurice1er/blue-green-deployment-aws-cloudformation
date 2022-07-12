@@ -21,12 +21,12 @@
       changed_when: false
       
   tasks:
-    - name: [1] Create Prometheus system group
+    - name: Create Prometheus system group
       shell: | 
         groupadd --system prometheus
         useradd -s /sbin/nologin --system -g prometheus prometheus
 
-    - name: [2] Create data & configs directories for Prometheus
+    - name: Create data & configs directories for Prometheus
       shell: | 
         mkdir /var/lib/prometheus
         for i in rules rules.d files_sd; do sudo mkdir -p /etc/prometheus/${i}; done
