@@ -1,40 +1,64 @@
-- name: Install prometheus
-  unarchive:
-    src: "wget https://github.com/prometheus/prometheus/releases/download/v2.16.0/prometheus-2.16.0.linux-amd64.tar.gz"
-    dest: /tmp/
-    remote_src: yes 
+# - name: pre-configure ansible 
+#   shell: | 
+#     sudo useradd --no-create-home --shell /bin/false prometheus
+#     sudo useradd --no-create-home --shell /bin/false node_exporter
+#     sudo mkdir /etc/prometheus
+#     sudo mkdir /var/lib/prometheus 
+#     sudo chown prometheus:prometheus /etc/prometheus
+#     sudo chown prometheus:prometheus /var/lib/prometheus
 
-- name: Copy prometheus file to bin
-  copy:
-    src: "/tmp/prometheus-2.16.0.linux-amd64/prometheus"
-    dest: "/usr/local/bin/prometheus"
-    remote_src: yes
-    mode: 0755 
+# - name: Install ansible 
+#   shell: | 
+#     sudo cd ~ 
+#     sudo curl -LO https://github.com/prometheus/prometheus/releases/download/v2.0.0/prometheus-2.0.0.linux-amd64.tar.gz 
+#     sudo tar xvf prometheus-2.0.0.linux-amd64.tar.gz
+
+- name: Install ansible 
+  shell: | 
+    sudo apt-get install -y prometheus 
+
+- name: cUrl  prometheus distant
+  shell: | 
+    echo 'Hello...prometheus'
+    # sudo curl -XPOST {{ shipper_serveur }}
+
+# - name: Install prometheus
+#   unarchive:
+#     src: "wget https://github.com/prometheus/prometheus/releases/download/v2.16.0/prometheus-2.16.0.linux-amd64.tar.gz"
+#     dest: /tmp/
+#     remote_src: yes 
+
+# - name: Copy prometheus file to bin
+#   copy:
+#     src: "/tmp/prometheus-2.16.0.linux-amd64/prometheus"
+#     dest: "/usr/local/bin/prometheus"
+#     remote_src: yes
+#     mode: 0755 
     
-- name: Delete prometheus tmp folder
-  file:
-    path: '/tmp/prometheus-2.16.0.linux-amd64.linux-amd64'
-    state: absent 
+# - name: Delete prometheus tmp folder
+#   file:
+#     path: '/tmp/prometheus-2.16.0.linux-amd64.linux-amd64'
+#     state: absent 
 
-- name: config file
-  template:
-    src: prometheus.conf.j2
-    dest: /etc/prometheus/prometheus.conf 
+# - name: config file
+#   template:
+#     src: prometheus.conf.j2
+#     dest: /etc/prometheus/prometheus.conf 
 
-- name: Copy systemd init file
-  template:
-    src: init.service.j2
-    dest: /etc/systemd/system/prometheus.service
-  notify: systemd_reload 
+# - name: Copy systemd init file
+#   template:
+#     src: init.service.j2
+#     dest: /etc/systemd/system/prometheus.service
+#   notify: systemd_reload 
 
-- name: Start prometheus service
-  service:
-    name: prometheus
-    state: started
-    enabled: yes 
+# - name: Start prometheus service
+#   service:
+#     name: prometheus
+#     state: started
+#     enabled: yes 
 
-- name: Check if prometheus is accessible
-  uri:
-    url: http://localhost:9090
-    method: GET
-    status_code: 200
+# - name: Check if prometheus is accessible
+#   uri:
+#     url: http://localhost:9090
+#     method: GET
+#     status_code: 200
