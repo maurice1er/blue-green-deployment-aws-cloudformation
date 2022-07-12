@@ -262,10 +262,6 @@ jobs:
             npm audit fix --force --audit-level=critical
             npm audit --audit-level=critical
             npm run migrations --force > migrations_dumps.txt 
-            echo '--------------'
-            pwd
-            cat migrations_dumps.txt
-            ls -l 
       - run:
           name: Send migration status to kvdb.io
           command: |
@@ -378,11 +374,16 @@ jobs:
             else
               exit 1
             fi
-      # - run:
-      #     name: Frontend smoke test.
-      #     command: |
-      #       # your code here
-      # Here's where you will add some code to rollback on failure 
+      - run:
+          name: Frontend smoke test.
+          command: |
+            FRONTEND_WEBSITE=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com
+            if curl -s $FRONTEND_WEBSITE | grep "Welcome"
+            then
+              exit 1
+            else
+              exit 2
+            fi 
       
       - destroy-environment
       - revert-migrations
