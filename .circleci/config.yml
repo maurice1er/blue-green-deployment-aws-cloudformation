@@ -472,9 +472,11 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
 
-            echo '----------->' $BACKEND_PUBLIC_IP
+            echo '----------->' ${BACKEND_PUBLIC_IP}
 
-            ls -l 
+            pwd
+
+            ls -la
             
             IP_EXPORTER="${BACKEND_PUBLIC_IP}" envsubst < config/prometheus-conf.yml.tmpl > config/prometheus-conf.yml
             PORT_EXPORTER="9090" envsubst < config/prometheus-conf.yml.tmpl > config/prometheus-conf.yml
