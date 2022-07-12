@@ -467,7 +467,8 @@ jobs:
       - run:
           name: Deploy prometheus
           command: | 
-            cd .circleci/ansible
+            cd .circleci/ansible 
+            ls -l
             ansible-playbook -i inventory-prometheus.txt deploy-prometheus.yml
       
         
