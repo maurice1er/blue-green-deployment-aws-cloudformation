@@ -255,7 +255,6 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            echo "https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7}"
             cd backend
             npm install
             npm audit fix --force --audit-level=critical
@@ -462,8 +461,8 @@ workflows:
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       # # 
-      # - cloudfront-update:
-      #     requires: [smoke-test]
+      - cloudfront-update:
+          requires: [smoke-test]
       # # 
       # - cleanup:
       #     requires: [cloudfront-update]
