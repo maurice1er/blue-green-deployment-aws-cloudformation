@@ -35,8 +35,8 @@
 
     - name: Check installed version
       shell: | 
-        ls -la
-        ./prometheus --version
+        ls -l
+        # ./prometheus --version
 
   # roles:
   #   - configure-prometheus-server 
