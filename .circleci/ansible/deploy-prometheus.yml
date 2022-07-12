@@ -42,21 +42,33 @@
     - name: Check installed version
       shell: | 
         prometheus --version
-        promtool --version 
-
-        mv prometheus.yml /etc/prometheus/prometheus.yml 
+        promtool --version  
+        echo """
+          global:
+            scrape_interval:     15s
+            external_labels:
+              monitor: 'codelab-monitor'
+          scrape_configs:
+            - job_name: 'prometheus'
+              scrape_interval: 5s
+              static_configs:
+                - targets: ['localhost:9090']
+        """ > prometheus.yml
+        mv prometheus.yml /etc/prometheus/prometheus.yml
         mv consoles/ console_libraries/ /etc/prometheus/
 
     - name: Reload systemd daemon and start the service
       shell: |
         systemctl daemon-reload
-        systemctl start prometheus
-        systemctl enable prometheus
+        systemctl start prometheus 
+        systemctl enable prometheus 
 
     - name: Check status using systemctl status prometheus command 
       shell: |
         systemctl status prometheus
 
+
   # roles:
-  #   - configure-prometheus-server
+  #   - configure-prometheus-server 
+
 
