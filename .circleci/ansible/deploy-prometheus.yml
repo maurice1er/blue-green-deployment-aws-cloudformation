@@ -35,12 +35,14 @@
         tar xzvf prometheus-2.19.0.linux-amd64.tar.gz
         mv prometheus-2.19.0.linux-amd64.tar.gz prometheus
 
-    - name: Check installed version
+    - name: Check installed version 
+      become: true
       shell: | 
         cd prometheus
         ./prometheus --version 
 
     - name: Run prometheus
+      become: true
       shell: | 
         # cp {{prom_conf_file}} ./prometheus
         cd prometheus 
