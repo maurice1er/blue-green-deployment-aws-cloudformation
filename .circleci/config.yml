@@ -482,12 +482,11 @@ jobs:
             # PORT_EXPORTER="9090" envsubst < .circleci/config/prometheus-conf.yml.tmpl > .circleci/config/prometheus-conf.yml
             # my_image="70077007/$IMAGE_TAG_NAME:$BUILD_NUMBER" envsubst < k8s/deploy.yml.tmpl > k8s/k8s-deploy.yml
 
-            echo '    - targets: ["${BACKEND_PUBLIC_IP}:9090"]' >> .circleci/config/prometheus-conf.yml
+            echo '    - targets: ["${BACKEND_PUBLIC_IP}":9090]' >> .circleci/config/prometheus-conf.yml
 
             cat .circleci/config/prometheus-conf.yml
 
-            # cd .circleci/ansible
-            cd ansible
+            cd .circleci/ansible
             
             # ansible-playbook example.yml --extra-vars “group=development pkg_name=apache2”
             ansible-playbook -i inventory-prometheus.txt deploy-prometheus.yml 
