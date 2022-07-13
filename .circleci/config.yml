@@ -467,8 +467,6 @@ jobs:
       - run:
           name: Deploy prometheus
           command: | 
-            sudo apt install apt-get install gettext-base
-
             BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
