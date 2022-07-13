@@ -42,7 +42,7 @@
 
     - name: Run prometheus
       shell: | 
-        cp {{prom_conf_file}} ./prometheus
+        # cp {{prom_conf_file}} ./prometheus
         cd prometheus 
         ./prometheus
 
