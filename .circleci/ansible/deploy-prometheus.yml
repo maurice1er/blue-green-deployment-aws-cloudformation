@@ -20,10 +20,10 @@
       raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
       changed_when: false
 
-    - name: "install envsubst"
-      become: true 
-      shell: |
-        apt-get install gettext-base
+    # - name: "install envsubst"
+    #   become: true 
+    #   shell: |
+    #     apt-get install gettext-base
       
   tasks:
     - name: Download Prometheus
