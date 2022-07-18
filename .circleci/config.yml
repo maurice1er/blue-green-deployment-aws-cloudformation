@@ -392,28 +392,36 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image: cimg/base:stable
+      - image: ubuntu:focal
+      # - image: cimg/base:stable
     steps:
       - checkout
-      - install_awscli
+      # - install_awscli
       - install_nodejs
+      - run:
+          name: Install awscliv2
+          command: |
+            apt-get update -y && apt-get install -y curl unzip groff jq bc 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
+            unzip awscliv2.zip
+            ./aws/install
       - run:
           name: Save Old Workflow ID to kvdb.io
           command: |
             export OLD_WORKFLOW_ID=$(aws cloudformation \
                       list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                       --no-paginate --output text)
-            echo "Old Workflow ID: $OLD_WORKFLOW_ID or ${OLD_WORKFLOW_ID}"
-            echo "new Workflow ID: ${CIRCLE_WORKFLOW_ID:0:7}"
+            echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
             curl https://kvdb.io/${KVDB_BUCKET}/old_workflow_id -d "${OLD_WORKFLOW_ID}"
       - run:
           name: Update cloudfront distribution
           command: |
-            aws cloudformation deploy --template-file .circleci/files/cloudfront.yml --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" --stack-name InitialStack
-            echo "Update CloudFront ok"
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yml \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --stack-name InitialStack --no-execute-changeset true 
       - destroy-environment 
-      - revert-migrations 
-
+      - revert-migrations
 
   cleanup:
     docker:
