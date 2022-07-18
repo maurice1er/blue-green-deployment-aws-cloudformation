@@ -372,7 +372,7 @@ jobs:
             then
               exit 0
             else
-              echo "Migrations failed"
+              echo "Backend smoke test failed"
               exit 1
             fi
       - run:
@@ -382,7 +382,8 @@ jobs:
             if curl -s $FRONTEND_WEBSITE | grep "Welcome"
             then
               exit 0
-            else
+            else 
+              echo "Frontend smoke test failed"
               exit 1
             fi
       
